@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: This template creates a group and user
+
+Resources:
+
+# create a user with username "Admin"
+ Admin: 
+  Type: AWS::IAM::User
+  Properties:
+   Path: /
+   LoginProfile:
+    Password: Admin123
+   UserName: "Admin"
+
+
+  # create a group called TestGroup
+ TestGroup:
+   Type: AWS::IAM::Group
+   Properties:
+    Path: /
+    GroupName: TestGroup
+
+# add the user, Admin to the TestGroup group
+ AddUserToGroup:
+   Type: AWS::IAM::UserToGroupAddition
+   Properties:
+    GroupName: TestGroup
+    Users:
+     - !Ref Admin
+
+
+# create a poweruser policy
+ PowerUserPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+     Groups:
+      - !Ref TestGroup
+     PolicyName: "testpolicy"
+     PolicyDocument:
+      Version: 2012-10-17
+      Statement: 
+       - Effect: Allow
+         NotAction:
+          - iam:*
+          - organizations:*
+         Resource: "*"
+       
+       - Effect: Allow
+         Action:
+           - 'iam:CreateServiceLinkedRole'
+           - 'iam:DeleteServiceLinkedRole'
+           - 'iam:ListRoles'
+           - 'organizations:DescribeOrganization'
+         Resource: "*"
