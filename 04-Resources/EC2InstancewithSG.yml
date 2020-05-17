@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: A simple EC2 instance is created that has all inbound access from any port (just for testing) by this template
+Resources:
+  SimpleEC2Instance:
+   Type: AWS::EC2::Instance
+   Properties:
+    ImageId: ami-0323c3dd2da7fb37d
+    InstanceType: t2.micro
+    KeyName: cfn1keypair
+    SecurityGroups:
+      - !Ref SSHSG 
+      # associate the newly created SG with the previously created EC2 Instance
+
+# create a new SG
+
+  SSHSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: This is a SG that only has port 22 open for this IP address #GroupDescription is MANDATORY
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        CidrIp: "0.0.0.0/0"
+        FromPort: 22
+        ToPort: 22
+
+
+######################################################################################
+# IMPORTANT NOTE: THE !REF FUNCTION WHEN USED WITH RESOURCE REFERS TO THAT RESOURCE SUCH AS IN HERE, THE EC2 INSTANCE REFERS TO THE SSH SG
+# BUT WHEN USED WITH PARAMETERS THEN THE !REF FUNCTION GIVES <strong> THE VALUE </strong> OF THE PARAMETER
+######################################################################################
+
+# Adding a new SG TERMINATES the EC2 instances and spins up a new one
+
+
+############################################################## THERE MUST BE ONLY ONE "RESOURCES" TEXT
+# if you have multiple then it will only create the resource under the last "Resources" text
