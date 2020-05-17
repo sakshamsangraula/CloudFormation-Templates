@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: A simple EC2 instance is created that has all inbound access from any port (just for testing) by this template
+Resources:
+  SimpleEC2InstanceUdemy:
+   Type: AWS::EC2::Instance
+   Properties:
+    ImageId: ami-0323c3dd2da7fb37d
+    InstanceType: t2.micro
+    KeyName: cfn1keypair
+    SecurityGroups:
+      - default
