@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create a S3 Bucket that has public read access and host a static website on the bucket
+
+# create a S3 bucket with public access
+Resources:
+ MyS3Bucket:
+  Type: AWS::S3::Bucket
+  DeletionPolicy: Retain
+  Properties:
+   AccessControl: 'PublicRead'
+   WebsiteConfiguration:
+    IndexDocument: 'index.html'
+    ErrorDocument: 'error.html'
+
+# output the website url
+Outputs:
+ WebsiteURL:
+  Description: The url of the website hosted in S3
+  Value: !GetAtt
+   - MyS3Bucket
+   - WebsiteURL
