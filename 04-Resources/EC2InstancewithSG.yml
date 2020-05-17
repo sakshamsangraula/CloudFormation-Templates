@@ -23,6 +23,14 @@ Resources:
         FromPort: 22
         ToPort: 22
 
+        # add a new SG rule for inbound port 80 from all IP (unrestricted inbound access)
+      - IpProtocol: tcp
+        CidrIp: "0.0.0.0/0"
+        FromPort: 80
+        ToPort: 80
+
+        #Note: adding a new rule in SG doesn't terminate or stop the EC2 instance, there will NOT be ANY replacement
+
 
 ######################################################################################
 # IMPORTANT NOTE: THE !REF FUNCTION WHEN USED WITH RESOURCE REFERS TO THAT RESOURCE SUCH AS IN HERE, THE EC2 INSTANCE REFERS TO THE SSH SG
