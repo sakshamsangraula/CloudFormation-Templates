@@ -19,7 +19,7 @@ Resources:
       GroupDescription: This is a SG that only has port 22 open for this IP address #GroupDescription is MANDATORY
       SecurityGroupIngress:
       - IpProtocol: tcp
-        CidrIp: "0.0.0.0/0"
+        CidrIp: "0.0.0.0/0" # previously this was my public IP address and CF showed drift but changing it back to 0.0.0.0/0 resulted in IN_SYNC
         FromPort: 22
         ToPort: 22
 
@@ -28,6 +28,12 @@ Resources:
         CidrIp: "0.0.0.0/0"
         FromPort: 80
         ToPort: 80
+
+
+  ElasticIP:
+   Type: AWS::EC2::EIP
+   Properties:
+    InstanceId: !Ref SimpleEC2Instance
 
         #Note: adding a new rule in SG doesn't terminate or stop the EC2 instance, there will NOT be ANY replacement
 
